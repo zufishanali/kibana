@@ -22,7 +22,6 @@ export function createInitialQueryParametersState(
   tieBreakerField: string = '_doc'
 ) {
   return {
-    anchorType: null,
     anchorId: null,
     columns: [],
     defaultStepSize,
