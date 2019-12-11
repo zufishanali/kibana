@@ -17,31 +17,15 @@
  * under the License.
  */
 
-import angular from 'angular';
-import _ from 'lodash';
-// @ts-ignore -- awaiting https://github.com/w33ble/rison-node/issues/1
-import rison from 'rison-node';
+import { IKibanaSearchRequest, IKibanaSearchResponse } from '../../../src/plugins/data/public';
 
-export class BaseObject {
-  // Set the attributes or default to an empty object
-  constructor(attributes: Record<string, any> = {}) {
-    // Set the attributes or default to an empty object
-    _.assign(this, attributes);
-  }
+export const DEMO_SEARCH_STRATEGY = 'DEMO_SEARCH_STRATEGY';
 
-  public toObject() {
-    // return just the data.
-    return _.omit(this, (value: any, key: string) => {
-      return key.charAt(0) === '$' || key.charAt(0) === '_' || _.isFunction(value);
-    });
-  }
+export interface IDemoRequest extends IKibanaSearchRequest {
+  mood: string | 'sad' | 'happy';
+  name: string;
+}
 
-  public toRISON() {
-    // Use Angular to remove the private vars, and JSON.stringify to serialize
-    return rison.encode(JSON.parse(angular.toJson(this)));
-  }
-
-  public toJSON() {
-    return this.toObject();
-  }
+export interface IDemoResponse extends IKibanaSearchResponse {
+  greeting: string;
 }

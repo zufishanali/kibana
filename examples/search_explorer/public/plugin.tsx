@@ -17,18 +17,26 @@
  * under the License.
  */
 
-import {
-  IKibanaSearchRequest,
-  IKibanaSearchResponse,
-} from '../../../../../src/plugins/data/public';
+import { Plugin, CoreSetup } from 'kibana/public';
+import { ISearchAppMountContext } from '../../../src/plugins/data/public';
 
-export const DEMO_SEARCH_STRATEGY = 'DEMO_SEARCH_STRATEGY';
-
-export interface IDemoRequest extends IKibanaSearchRequest {
-  mood: string | 'sad' | 'happy';
-  name: string;
+declare module 'kibana/public' {
+  interface AppMountContext {
+    search?: ISearchAppMountContext;
+  }
 }
+export class SearchExplorerPlugin implements Plugin {
+  public setup(core: CoreSetup) {
+    core.application.register({
+      id: 'searchExplorer',
+      title: 'Search Explorer',
+      async mount(context, params) {
+        const { renderApp } = await import('./application');
+        return renderApp(context, params);
+      },
+    });
+  }
 
-export interface IDemoResponse extends IKibanaSearchResponse {
-  greeting: string;
+  public start() {}
+  public stop() {}
 }
